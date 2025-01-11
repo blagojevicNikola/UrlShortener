@@ -1,0 +1,19 @@
+@UrlShortener_HostAddress = http://localhost:5045
+
+GET {{UrlShortener_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+GET {{UrlShortener_HostAddress}}/api/ZH2LQ
+Content-Type: application/json
+Accept: application/json
+
+###
+
+POST {{UrlShortener_HostAddress}}/api/short-url
+Content-Type: application/json
+
+{
+  "url":"www.google.com"
+}
+###
