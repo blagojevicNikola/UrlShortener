@@ -7,6 +7,9 @@ public class Base62Encoder(IConfiguration config) : IEncoder
     private const int _base = 62;
     public string Encode(long value)
     {
+        if (value < 0)
+            throw new ArgumentOutOfRangeException(nameof(value), "Encoding value cannot be less than zero!");
+
         var charSet =
             config.GetSection("Encodings").GetValue<string>("Base62")?.ToCharArray()
             ?? throw new EncodingException();
