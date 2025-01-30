@@ -12,15 +12,15 @@ using UrlShortener.Infrastructure;
 namespace UrlShortener.Migrations
 {
     [DbContext(typeof(UrlShortenerContext))]
-    [Migration("20250105201425_Counter entity")]
-    partial class Counterentity
+    [Migration("20250130094446_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.0")
+                .HasAnnotation("ProductVersion", "9.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -29,29 +29,37 @@ namespace UrlShortener.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<byte[]>("Concurrency")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("bytea");
+                        .HasColumnType("bytea")
+                        .HasColumnName("concurrency");
 
                     b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created");
 
                     b.Property<long>("CurrentStartingValue")
-                        .HasColumnType("bigint");
+                        .HasColumnType("bigint")
+                        .HasColumnName("current_starting_value");
 
                     b.Property<long>("IncrementValue")
-                        .HasColumnType("bigint");
+                        .HasColumnType("bigint")
+                        .HasColumnName("increment_value");
 
                     b.Property<bool>("Invalidated")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("invalidated");
 
                     b.Property<long>("MaxValue")
-                        .HasColumnType("bigint");
+                        .HasColumnType("bigint")
+                        .HasColumnName("max_value");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_counter");
 
                     b.ToTable("counter", (string)null);
                 });
@@ -60,27 +68,33 @@ namespace UrlShortener.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created");
 
                     b.Property<bool>("Invalidated")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasDefaultValue(false);
+                        .HasDefaultValue(false)
+                        .HasColumnName("invalidated");
 
                     b.Property<string>("LongUrl")
                         .IsRequired()
                         .HasMaxLength(150)
-                        .HasColumnType("character varying(150)");
+                        .HasColumnType("character varying(150)")
+                        .HasColumnName("long_url");
 
                     b.Property<string>("ShortenUrl")
                         .IsRequired()
                         .HasMaxLength(150)
-                        .HasColumnType("character varying(150)");
+                        .HasColumnType("character varying(150)")
+                        .HasColumnName("shorten_url");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_pair");
 
                     b.ToTable("pair", (string)null);
                 });
@@ -89,37 +103,47 @@ namespace UrlShortener.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<DateTime>("AccessTime")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("access_time");
 
                     b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created");
 
                     b.Property<bool>("Invalidated")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasDefaultValue(false);
+                        .HasDefaultValue(false)
+                        .HasColumnName("invalidated");
 
                     b.Property<string>("IpAddress")
                         .HasMaxLength(150)
-                        .HasColumnType("character varying(150)");
+                        .HasColumnType("character varying(150)")
+                        .HasColumnName("ip_address");
 
                     b.Property<Guid>("PairId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("pair_id");
 
                     b.Property<string>("Referer")
                         .HasMaxLength(150)
-                        .HasColumnType("character varying(150)");
+                        .HasColumnType("character varying(150)")
+                        .HasColumnName("referer");
 
                     b.Property<string>("UserAgent")
                         .HasMaxLength(400)
-                        .HasColumnType("character varying(400)");
+                        .HasColumnType("character varying(400)")
+                        .HasColumnName("user_agent");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_usage");
 
-                    b.HasIndex("PairId");
+                    b.HasIndex("PairId")
+                        .HasDatabaseName("ix_usage_pair_id");
 
                     b.ToTable("usage", (string)null);
                 });
@@ -130,7 +154,8 @@ namespace UrlShortener.Migrations
                         .WithMany("Usages")
                         .HasForeignKey("PairId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_usage_pair_pair_id");
 
                     b.Navigation("Pair");
                 });

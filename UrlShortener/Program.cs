@@ -8,9 +8,12 @@ using UrlShortener.Infrastructure;
 var builder = WebApplication.CreateBuilder(args);
 
 var config = builder.Configuration;
+
 // Add services to the container.
-builder.Host.UseSerilog((context, configuration)
-    => configuration.ReadFrom.Configuration(context.Configuration), writeToProviders: true);
+builder.Host.UseSerilog(
+    (context, configuration) => configuration.ReadFrom.Configuration(context.Configuration),
+    writeToProviders: true
+);
 builder.Services.RegisterInfrastructure(config);
 builder.Logging.ConfigureInfrastructureLogging();
 
@@ -29,9 +32,18 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 
-    await using var serviceScope = app.Services.CreateAsyncScope();
-    await using var dbContext = serviceScope.ServiceProvider.GetRequiredService<UrlShortenerContext>();
-    await dbContext.Database.MigrateAsync();
+
+    try
+    {
+        await using var serviceScope = app.Services.CreateAsyncScope();
+        await using var dbContext =
+            serviceScope.ServiceProvider.GetRequiredService<UrlShortenerContext>();
+        await dbContext.Database.MigrateAsync();
+    }
+    catch (Exception e)
+    {
+        Console.WriteLine(e.Message);
+    }
 }
 
 app.UseSerilogRequestLogging();
@@ -45,3 +57,4 @@ app.UseFastEndpoints(options => options.Endpoints.RoutePrefix = "api");
 
 app.Run();
 
+public partial class Program { }

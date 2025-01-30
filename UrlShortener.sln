@@ -9,6 +9,8 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UrlShortener.UnitTests", "UrlShortener.UnitTests\UrlShortener.UnitTests.csproj", "{A9CBF415-D084-4D2E-A9AB-63BA0530CFCF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UrlShortener.IntegrationTests", "UrlShortener.IntegrationTests\UrlShortener.IntegrationTests.csproj", "{3192E89C-F015-45CB-A93F-767946640167}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{A9CBF415-D084-4D2E-A9AB-63BA0530CFCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9CBF415-D084-4D2E-A9AB-63BA0530CFCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9CBF415-D084-4D2E-A9AB-63BA0530CFCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3192E89C-F015-45CB-A93F-767946640167}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3192E89C-F015-45CB-A93F-767946640167}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3192E89C-F015-45CB-A93F-767946640167}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3192E89C-F015-45CB-A93F-767946640167}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

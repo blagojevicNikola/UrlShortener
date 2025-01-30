@@ -6,7 +6,7 @@ namespace UrlShortener.Features.Url.Shorten;
 
 public record ShortenUrlCommand : ICommand<Result<ShortenUrlResponse>>
 {
-    public string Schema { get; set; } = "https";
+    public string Schema { get; set; } = null!;
 
     public string Address { get; set; } = null!;
 }

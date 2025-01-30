@@ -62,6 +62,7 @@ public static class InfrastructureRegistration
             (sp, options) =>
                 options
                     .UseNpgsql(connectionString)
+                    .UseSnakeCaseNamingConvention()
                     .AddInterceptors(sp.GetRequiredService<MetadataInterceptor>())
                     .UseSeeding((context, _) =>
                     {
@@ -143,7 +144,7 @@ public static class InfrastructureRegistration
         {
             context.Set<Counter>().Add(new Counter()
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.Parse("e829e214-31bb-495a-8204-ead625f29272"),
                 MaxValue = 300_000_00,
                 CurrentStartingValue = 0,
                 IncrementValue = 1_000_000,
