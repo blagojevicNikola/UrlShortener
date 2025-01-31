@@ -112,7 +112,6 @@ public static class InfrastructureRegistration
 
     private static void AddOpenTelemetry(IServiceCollection services, string serviceName)
     {
-        services.AddSingleton<ICounterDiagnostics, UrlAccessDiagnostics>();
         services.AddOpenTelemetry()
             .ConfigureResource(resource => resource.AddService(serviceName))
             .WithMetrics(metrics =>
@@ -130,10 +129,13 @@ public static class InfrastructureRegistration
                 tracing
                     .AddAspNetCoreInstrumentation()
                     .AddHttpClientInstrumentation()
-                    .AddEntityFrameworkCoreInstrumentation();
+                    .AddEntityFrameworkCoreInstrumentation()
+                    .AddSource(ProcessAccessInstrumentation.ActivitySourceName);
 
                 tracing.AddOtlpExporter();
             });
+        services.AddSingleton<IActivitySourceInstrumentation, ProcessAccessInstrumentation>();
+        services.AddSingleton<ICounterDiagnostics, UrlAccessDiagnostics>();
     }
 
     private static bool SeedData(DbContext context)

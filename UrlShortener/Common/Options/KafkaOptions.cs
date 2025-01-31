@@ -21,5 +21,5 @@ public class ProducerOptions
 {
     public required string Name { get; set; }
     public required string Topic { get; set; }
-
+    public required int RetryCount { get; set; }
 }

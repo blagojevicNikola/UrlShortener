@@ -1,16 +1,18 @@
 ﻿using KafkaFlow;
 using UrlShortener.Common.Events;
 using UrlShortener.Infrastructure;
+using UrlShortener.Infrastructure.Telemetry;
 
 namespace UrlShortener.Features.Analytics.ProcessAccess;
 
-public class ProcessAccessEventHandler(IServiceScopeFactory serviceScopeFactory, ILogger<ProcessAccessEventHandler> logger) : IMessageHandler<ShortUrlAccessEvent>
+public class ProcessAccessEventHandler(IServiceScopeFactory serviceScopeFactory, IActivitySourceInstrumentation instrumentation, ILogger<ProcessAccessEventHandler> logger) : IMessageHandler<ShortUrlAccessEvent>
 {
     public async Task Handle(IMessageContext context, ShortUrlAccessEvent message)
     {
         using var scope = serviceScopeFactory.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<UrlShortenerContext>();
 
+        using var activity = instrumentation.CreateAndStartActivity("ProcessAccessEvent");
         var pair = dbContext.Pairs
             .Where(e => e.Id == message.PairId)
             .FirstOrDefault();
